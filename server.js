@@ -7,25 +7,28 @@ const signin = require("./controllers/signin");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
 const PORT = process.env.PORT || 3000;
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require("dotenv");
+dotenv.config();
 
 const db = knex({
   client: "pg",
-  version: "7.2",
+  version: "8.8",
   connection: {
     host: process.env.PGHOST,
     port: process.env.PGPORT,
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
-    ssl: true
+    ssl: { rejectUnauthorized: false },
   },
+  pool: { min: 0, max: 7 },
 });
 
-db.select('*').from('login').then(data => {
-  console.log(data)
-})
+db.select("*")
+  .from("login")
+  .then((data) => {
+    console.log(data);
+  });
 
 const app = express();
 
@@ -52,10 +55,10 @@ app.put("/image", (req, res) => {
   image.handleImage(req, res, db);
 });
 app.post("/imageurl", (req, res) => {
-    image.handleApiCall(req, res);
-  }); 
+  image.handleApiCall(req, res);
+});
 
 app.listen(PORT, () => {
   console.log(`app is running on port ${PORT}`);
 });
-console.log(PORT)
+console.log(PORT);
