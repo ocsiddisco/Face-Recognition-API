@@ -24,15 +24,6 @@ const db = knex({
   pool: { min: 0, max: 7 },
 });
 
-console.log({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
-  ssl: { rejectUnauthorized: false },
-});
-
 db.select("*")
   .from("login")
   .then((data) => {
